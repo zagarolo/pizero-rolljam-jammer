@@ -12,14 +12,14 @@ RestartSec=3
 [Install]
 WantedBy=multi-user.target
 [Unit]
-Description=RollJam BLE peripheral
+Description=RollJam beacon scanner (BLE passive listener)
 After=bluetooth.service rolljam-daemon.service
 Wants=bluetooth.service
 
 [Service]
 Type=simple
-User=pizero
-ExecStart=/usr/bin/python3 /home/pizero/rolljam_ble.py
+User=root
+ExecStart=/usr/bin/python3 /home/pizero/rolljam_beacon_scanner.py
 Restart=always
 RestartSec=5
 
