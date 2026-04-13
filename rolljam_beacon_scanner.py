@@ -24,6 +24,7 @@ def write_cmd(cmd: str):
     try:
         with open(CMD_FILE, 'w') as f:
             f.write(cmd)
+        os.chmod(CMD_FILE, 0o666)
         log.info(f'CMD → {cmd}')
     except Exception as e:
         log.error(f'write fail: {e}')
@@ -34,6 +35,9 @@ def parse_data(d: bytes):
     return d[4]
 
 def on_advertisement(device, adv_data):
+    if adv_data.manufacturer_data:
+        for cid,val in adv_data.manufacturer_data.items():
+            log.info(f"ADV {device.address} cid={cid:04x} data={bytes(val).hex()}")
     global last_state
     # mfg_data dict {company_id: bytes}; cerca anche service_data
     candidates = []

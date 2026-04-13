@@ -25,7 +25,7 @@ def jam_start(freq_hz):
     log(f'JAM_START {freq_hz} Hz')
     # Simple approach: use pichirp (minimal CW-like)
     TX_PROC = subprocess.Popen(
-        ['sudo', '/home/pizero/rpitx/pichirp', str(freq_hz), '100', '1000000'],
+        ['sudo', '/home/pizero/rpitx/tune', '-f', str(freq_hz)],
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
     )
 
@@ -37,7 +37,7 @@ def jam_stop():
         try: TX_PROC.wait(timeout=2)
         except: TX_PROC.kill()
     TX_PROC = None
-    subprocess.run(['sudo', 'pkill', '-9', 'pichirp'], capture_output=True)
+    subprocess.run(['sudo', 'pkill', '-9', 'tune'], capture_output=True)
     subprocess.run(['sudo', 'pkill', '-9', 'sendiq'], capture_output=True)
     subprocess.run(['sudo', 'pkill', '-9', 'rpitx'], capture_output=True)
 
