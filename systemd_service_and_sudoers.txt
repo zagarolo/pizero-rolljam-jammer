@@ -1,0 +1,15 @@
+[Unit]
+Description=RollJam BLE daemon controlling rpitx
+After=network.target
+
+[Service]
+Type=simple
+User=pizero
+ExecStart=/usr/bin/python3 /home/pizero/rolljam_daemon.py
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+---SUDOERS---
+pizero ALL=(ALL) NOPASSWD: /home/pizero/rpitx/pichirp, /home/pizero/rpitx/sendiq, /home/pizero/rpitx/rpitx, /usr/bin/pkill
