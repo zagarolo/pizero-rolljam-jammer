@@ -11,5 +11,18 @@ RestartSec=3
 
 [Install]
 WantedBy=multi-user.target
----SUDOERS---
+[Unit]
+Description=RollJam BLE peripheral
+After=bluetooth.service rolljam-daemon.service
+Wants=bluetooth.service
+
+[Service]
+Type=simple
+User=pizero
+ExecStart=/usr/bin/python3 /home/pizero/rolljam_ble.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
 pizero ALL=(ALL) NOPASSWD: /home/pizero/rpitx/pichirp, /home/pizero/rpitx/sendiq, /home/pizero/rpitx/rpitx, /usr/bin/pkill
