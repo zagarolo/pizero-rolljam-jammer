@@ -11,6 +11,7 @@ CMD_FILE = '/tmp/jam_cmd'
 LOG_FILE = '/tmp/rolljam_daemon.log'
 RPITX_BIN = '/home/pizero/rpitx/sendiq'
 TX_PROC = None
+JAM_START_T = 0.0
 
 def log(msg):
     with open(LOG_FILE, 'a') as f:
@@ -18,8 +19,9 @@ def log(msg):
     print(msg, flush=True)
 
 def jam_start(freq_hz):
-    global TX_PROC
+    global TX_PROC, JAM_START_T
     jam_stop()
+    JAM_START_T = time.time()
     # Generate continuous IQ sample (DC = carrier) to rpitx
     # sendiq: -s samplerate -f freq
     log(f'JAM_START {freq_hz} Hz')
