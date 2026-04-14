@@ -29,6 +29,16 @@ def jam_start(freq_hz):
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
     )
 
+
+def jam_fsk_start(freq_hz):
+    global TX_PROC
+    jam_stop()
+    log(f'JAM_FSK {freq_hz} Hz (tune CW fallback, no sweep → no falsi trigger)')
+    TX_PROC = subprocess.Popen(
+        ['sudo', '/home/pizero/rpitx/tune', '-f', str(freq_hz)],
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+    )
+
 def jam_stop():
     global TX_PROC
     if TX_PROC and TX_PROC.poll() is None:
@@ -49,6 +59,10 @@ def process_cmd(cmd):
         try: freq = int(parts[1])
         except: return
         jam_start(freq)
+    elif c == 'JAM_FSK' and len(parts) >= 2:
+        try: freq = int(parts[1])
+        except: return
+        jam_fsk_start(freq)
     elif c == 'JAM_STOP':
         jam_stop()
     elif c == 'PING':

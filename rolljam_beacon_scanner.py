@@ -16,7 +16,7 @@ log = logging.getLogger('rj-scan')
 
 CMD_FILE = '/tmp/jam_cmd'
 MAGIC = bytes([0x52, 0x4A, 0x30, 0x31])  # 'RJ01'
-STATE_OFF, STATE_ON_433, STATE_ON_868 = 0x00, 0x01, 0x02
+STATE_OFF, STATE_ON_433, STATE_ON_868, STATE_ON_FSK = 0x00, 0x01, 0x02, 0x03
 
 last_state = STATE_OFF
 
@@ -59,6 +59,8 @@ def on_advertisement(device, adv_data):
                 last_state = state
                 if state == STATE_ON_433:
                     write_cmd('JAM_START 433920000')
+                elif state == STATE_ON_FSK:
+                    write_cmd('JAM_FSK 433920000')
                 elif state == STATE_ON_868:
                     write_cmd('JAM_START 868000000')
                 elif state == STATE_OFF:
