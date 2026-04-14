@@ -83,6 +83,11 @@ def main():
                     last_cmd = cmd
                     process_cmd(cmd)
                     os.remove(CMD_FILE)
+            # WATCHDOG: se TX attivo da >15s senza nuovi comandi → auto-kill
+            if TX_PROC and TX_PROC.poll() is None and (time.time() - JAM_START_T) > 15.0:
+                log('WATCHDOG: TX running >15s no cmd, auto-kill')
+                jam_stop()
+                last_cmd = ''
         except Exception as e:
             log(f'ERR {e}')
         time.sleep(0.1)
