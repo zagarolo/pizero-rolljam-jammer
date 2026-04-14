@@ -50,6 +50,8 @@ def jam_stop():
     subprocess.run(['sudo', 'pkill', '-9', 'tune'], capture_output=True)
     subprocess.run(['sudo', 'pkill', '-9', 'sendiq'], capture_output=True)
     subprocess.run(['sudo', 'pkill', '-9', 'rpitx'], capture_output=True)
+    # Fix GPIO4 residual GPCLK0 output after kill
+    subprocess.run(['sudo', 'raspi-gpio', 'set', '4', 'ip'], capture_output=True)
 
 def process_cmd(cmd):
     parts = cmd.strip().split()
